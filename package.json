@@ -1,0 +1,61 @@
+{
+  "name": "npm-scripts-example",
+  "version": "1.0.0",
+  "description": "An example of how to use npm scripts over a build tool like Grunt or Gulp",
+  "main": "index.js",
+  "author": "Keith Cirkel <npm@keithcirkel.co.uk> (http://keithcirkel.co.uk/)",
+  "license": "MIT",
+  "devDependencies": {
+    "jspm": "^0.16.2",
+    "browserify": "^11.0.1",
+    "hashmark": "^3.0.0",
+    "http-server": "^0.8.0",
+    "jade": "^1.11.0",
+    "jshint": "^2.8.0",
+    "karma": "^0.13.9",
+    "karma-browserify": "^4.3.0",
+    "karma-cli": "^0.1.0",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "live-reload": "^1.1.0",
+    "minifyify": "^7.0.6",
+    "mocha": "^2.3.2",
+    "nodemon": "^1.4.1",
+    "parallelshell": "^2.0.0",
+    "phantomjs": "^1.9.18",
+    "rimraf": "^2.4.3",
+    "stylus": "^0.52.4"
+  },
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "prebuild": "npm run clean -s",
+    "build": "npm run build:scripts -s && npm run build:styles -s && npm run build:markup -s",
+    "build:scripts": "jspm bundle-sfx assets/scripts/main.js dist/main.js && hashmark dist/main.js -s -l 8 -m assets.json 'dist/{name}{hash}{ext}'",
+    "build:styles": "stylus assets/styles/main.styl -m -o dist/ && hashmark -s -l 8 -m assets.json dist/main.css 'dist/{name}{hash}{ext}'",
+    "build:markup": "jade assets/markup/index.jade --obj assets.json -o dist",
+    "test": "karma start --singleRun",
+    "watch": "parallelshell \"npm run watch:test -s\" \"npm run watch:build -s\"",
+    "watch:test": "karma start",
+    "watch:build": "nodemon -q -w assets/ --ext '.' --exec 'npm run build'",
+    "serve": "http-server -p 9090 dist/",
+    "api": "nodemon ./api/index.js localhost 8080",
+    "live-reload": "live-reload --port 9091 dist/",
+    "dev": "parallelshell \"npm run live-reload -s\" \"npm run api -s\" \"npm run serve -s\" \"npm run watch -s\""
+  },
+  "jspm": {
+    "directories": {
+      "packages": "vendor"
+    },
+    "configFile": "jspm.js",
+    "dependencies": {},
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.22",
+      "babel-runtime": "npm:babel-runtime@^5.8.20",
+      "core-js": "npm:core-js@^1.1.0"
+    }
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "node-hgt": "organicpanda/node-hgt"
+  }
+}
