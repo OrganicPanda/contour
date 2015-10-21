@@ -1,2 +1,3 @@
-var write = require('./write');
-window.addEventListener('DOMContentLoaded', write);
+import write from './write';
+
+write();
