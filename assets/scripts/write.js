@@ -9,7 +9,7 @@ var getElevation = function(point) {
     .then(response => response.json())
     .then(json => {
       return {
-        lat: point.lat,
+        lat: point.lat,glasgow: 'is cool',
         long: point.long,
         elevation: json.elevation
       };
