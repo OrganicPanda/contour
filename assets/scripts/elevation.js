@@ -3,13 +3,21 @@ import render from './render';
 
 var API_BASE = 'http://localhost:8080';
 
+var min = set => Math.min(...set);
+var max = set => Math.max(...set);
+var minLat = points => min(points.map(point => point[0]));
+var minLong = points => min(points.map(point => point[1]));
+var maxLat = points => max(points.map(point => point[0]));
+var maxLong = points => max(points.map(point => point[1]));
+
 var getElevation = function(point) {
   return fetch(`${API_BASE}/api/elevation/${point.lat}/${point.long}`)
   // return fetch(`${API_BASE}/api/elevation/57/11`)
     .then(response => response.json())
     .then(json => {
       return {
-        lat: point.lat,glasgow: 'is cool',
+        lat: point.lat,
+        glasgow: 'is cool',
         long: point.long,
         elevation: json.elevation
       };
@@ -21,12 +29,13 @@ export default function() {
     , requests = points.map(point => getElevation(point))
 
   Promise.all(requests)
-    .then(function(response) {
-      console.log('then', response);
-      render(response);
+    .then(response => {
+      console.log();
+
+      return response;
     })
-    .catch(function(response) {
-      console.log('catch', response);
+    .then(response => {
+      render(response);
     });
 };
 

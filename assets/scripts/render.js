@@ -30,7 +30,9 @@ var foo = function(points) {
   // X, Y, Z
   // Lat, Long, Elevation
   points
-    .map(point => new THREE.Vector3(point.lat - 50, point.long, point.elevation * 0.001))
+    .map(point => (
+      new THREE.Vector3(point.lat - 50, point.long, point.elevation * 0.0001)
+    ))
     .forEach(vector3 => geometry.vertices.push(vector3));
 
     // geometry.vertices.push(new THREE.Vector3(-10, 0, 0));
@@ -38,9 +40,6 @@ var foo = function(points) {
     // geometry.vertices.push(new THREE.Vector3(10, 0, 0));
 
     var line = new THREE.Line(geometry, material);
-
-  console.log('line', line);
-  console.log('geometry', geometry);
     scene.add(line);
 
   // camera.lookAt(points[0]);

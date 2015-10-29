@@ -1,3 +1,3 @@
-import write from './write';
+import elevation from './elevation';
 
-write();
+elevation();
